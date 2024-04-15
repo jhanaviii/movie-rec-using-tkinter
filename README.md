@@ -1,1 +1,1 @@
-# movie-rec-using-tkinter
+CineSuggest is an advanced movie recommendation system designed to provide personalized movie recommendations based on user preferences and behavior. Leveraging collaborative filtering techniques and machine learning algorithms, CineSuggest analyzes user ratings, movie features, and historical data to generate accurate and relevant movie recommendations tailored to each user's unique tastes and interests.
