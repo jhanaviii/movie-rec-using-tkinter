@@ -84,8 +84,23 @@ def recommend_movies(movie_id, num_recommendations=5):
 
 def on_recommend():
     movie_id = int(movie_id_entry.get())
+    
+    # Retrieve the movie name
+    cur.execute('''SELECT title FROM movies WHERE movie_id = ?''', (movie_id,))
+    movie_name = cur.fetchone()
+    
+    # Clear previous recommendations and movie name display
+    recommendation_text.delete(1.0, tk.END)
+    movie_name_label.config(text="")
+    
+    if movie_name:
+        movie_name_label.config(text=f"Movie Name: {movie_name[0]}")
+    else:
+       movie_name_label.config(text=f"Movie not found for ID: {movie_id}")
+
+    
+    # Generate and display movie recommendations
     recommendations = recommend_movies(movie_id)
-    recommendation_text.delete(1.0, tk.END)  # Clear previous recommendations
     for movie, score in recommendations:
         recommendation_text.insert(tk.END, f"{movie} (Similarity Score: {score: .2f}\n")
 
@@ -116,8 +131,12 @@ movie_id_entry.grid(column=1, row=0)
 recommend_button = ttk.Button(frame, text="Recommend", command=on_recommend)
 recommend_button.grid(column=2, row=0)
 
+# Add label to display movie name
+movie_name_label = ttk.Label(frame, text="")
+movie_name_label.grid(column=0, row=2, columnspan=3, pady=5)
+
 recommendation_text = tk.Text(frame, wrap=tk.WORD, height=10, width=50)
-recommendation_text.grid(column=0, row=1, columnspan=3, sticky=(tk.W, tk.E))
+recommendation_text.grid(column=0, row=3, columnspan=3, sticky=(tk.W, tk.E))
 
 root.mainloop()
 
